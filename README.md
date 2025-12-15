@@ -18,6 +18,23 @@ Set the following environment variables:
 - `ALLOWED_METHODS`: Comma-separated list of allowed JSON-RPC methods (e.g., `getblockchaininfo,getblockcount,getbestblockhash`)
 - `BACKEND_HOST`: Backend Bitcoin node address in format `host:port` (e.g., `localhost:8332`)
 
+### ⚠️ CRITICAL: Required nginx Environment Variables
+
+**YOU MUST SET THESE** for the nginx template substitution to work:
+
+```yaml
+environment:
+  - NGINX_ENVSUBST_TEMPLATE_DIR=/etc/nginx
+  - NGINX_ENVSUBST_OUTPUT_DIR=/etc/nginx
+```
+
+**Why this is critical:**
+- The nginx official image uses `envsubst` to substitute `${BACKEND_HOST}` in the nginx configuration
+- Without `NGINX_ENVSUBST_TEMPLATE_DIR`, the template file won't be processed
+- Without `NGINX_ENVSUBST_OUTPUT_DIR`, the substituted config won't be written to the correct location
+- **If these are missing, nginx will try to proxy to a literal `${BACKEND_HOST}` URL and fail**
+- This is the most common cause of "Internal error" or connection failures
+
 ## Usage
 
 ### Using Docker Compose
@@ -31,10 +48,14 @@ docker-compose up -d
 ```bash
 docker build -t bitcoin-proxy .
 docker run -p 8080:80 \
+  -e NGINX_ENVSUBST_TEMPLATE_DIR=/etc/nginx \
+  -e NGINX_ENVSUBST_OUTPUT_DIR=/etc/nginx \
   -e ALLOWED_METHODS="getblockchaininfo,getblockcount,getbestblockhash" \
   -e BACKEND_HOST="your-bitcoin-node:8332" \
   bitcoin-proxy
 ```
+
+**Note:** The `NGINX_ENVSUBST_*` variables are required for the nginx official image to process template variables.
 
 ### Testing
 
