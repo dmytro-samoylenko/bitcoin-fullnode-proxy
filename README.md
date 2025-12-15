@@ -1,8 +1,8 @@
-# Bitcoin Full Node Proxy
+# 🔒 Secure Bitcoin Core JSON-RPC Proxy
 
 [![Build and Push Docker Image](https://github.com/dmytro-samoylenko/bitcoin-fullnode-proxy/actions/workflows/docker-build.yml/badge.svg)](https://github.com/dmytro-samoylenko/bitcoin-fullnode-proxy/actions/workflows/docker-build.yml)
 
-An nginx-based reverse proxy for Bitcoin full nodes that filters JSON-RPC 1.0 requests against a whitelist of allowed methods.
+A lightweight, nginx + njs-based reverse proxy that restricts JSON-RPC API access to your Bitcoin full node. Configure method whitelists, add authentication layers, and protect bitcoind from unauthorized or dangerous calls.
 
 ## Features
 
