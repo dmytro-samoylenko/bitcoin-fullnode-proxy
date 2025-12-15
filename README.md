@@ -1,5 +1,7 @@
 # Bitcoin Full Node Proxy
 
+[![Build and Push Docker Image](https://github.com/dmytro-samoylenko/bitcoin-fullnode-proxy/actions/workflows/docker-build.yml/badge.svg)](https://github.com/dmytro-samoylenko/bitcoin-fullnode-proxy/actions/workflows/docker-build.yml)
+
 An nginx-based reverse proxy for Bitcoin full nodes that filters JSON-RPC 1.0 requests against a whitelist of allowed methods.
 
 ## Features
@@ -37,13 +39,30 @@ environment:
 
 ## Usage
 
+### Using Pre-built Docker Image
+
+Pull from GitHub Container Registry:
+
+```bash
+# Pull the image
+docker pull ghcr.io/dmytro-samoylenko/bitcoin-fullnode-proxy:latest
+
+# Run the image
+docker run -p 8080:80 \
+  -e NGINX_ENVSUBST_TEMPLATE_DIR=/etc/nginx \
+  -e NGINX_ENVSUBST_OUTPUT_DIR=/etc/nginx \
+  -e ALLOWED_METHODS="getblockchaininfo,getblockcount,getbestblockhash" \
+  -e BACKEND_HOST="your-bitcoin-node:8332" \
+  ghcr.io/dmytro-samoylenko/bitcoin-fullnode-proxy:latest
+```
+
 ### Using Docker Compose
 
 ```bash
 docker-compose up -d
 ```
 
-### Using Docker
+### Building from Source
 
 ```bash
 docker build -t bitcoin-proxy .
@@ -116,6 +135,31 @@ The proxy returns standard JSON-RPC 1.0 error responses:
 ## Files
 
 - `Dockerfile`: Container definition based on nginx:latest
-- `nginx.conf`: Nginx configuration with njs module
+- `nginx.conf.template`: Nginx configuration template with njs module
 - `jsonrpc-filter.js`: njs script that handles request filtering
 - `docker-compose.yml`: Example docker-compose setup
+- `.github/workflows/docker-build.yml`: GitHub Actions workflow for automated builds
+
+## GitHub Actions Setup
+
+The repository includes a GitHub Actions workflow that automatically builds and pushes Docker images to both Docker Hub and GitHub Container Registry.
+
+### Required Secrets
+
+No additional secrets required! The workflow uses the built-in `GITHUB_TOKEN` for authentication with GitHub Container Registry.
+
+### Workflow Triggers
+
+The workflow runs on:
+- **Push to main/master branch**: Builds and pushes with `latest` tag
+- **Git tags** (e.g., `v1.0.0`): Builds and pushes with version tags
+- **Pull requests**: Builds only (no push) for testing
+
+### Image Location
+
+After the workflow runs, images are available at:
+- GitHub Container Registry: `ghcr.io/dmytro-samoylenko/bitcoin-fullnode-proxy`
+
+### Multi-Architecture Support
+
+The workflow builds for both `linux/amd64` and `linux/arm64` platforms.
