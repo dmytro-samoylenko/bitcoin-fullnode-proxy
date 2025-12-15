@@ -70,7 +70,6 @@ function filterRequest(r) {
     r.subrequest('/_backend', {
         method: r.method,
         body: body,
-        args: r.args,
         headers: {
             'Authorization': r.headersIn.Authorization || '',
             'Content-Type': 'application/json'
