@@ -1,12 +1,7 @@
 FROM nginx:latest
 
-# Install njs module for JavaScript scripting in nginx
-RUN apt-get update && \
-    apt-get install -y nginx-module-njs && \
-    rm -rf /var/lib/apt/lists/*
-
 # Copy nginx configuration
-COPY nginx.conf /etc/nginx/nginx.conf
+COPY nginx.conf.template /etc/nginx/nginx.conf.template
 
 # Copy njs script for JSON-RPC filtering
 COPY jsonrpc-filter.js /etc/nginx/jsonrpc-filter.js

@@ -6,6 +6,8 @@ services:
     ports:
       - "8080:80"
     environment:
+      - NGINX_ENVSUBST_TEMPLATE_DIR=/etc/nginx
+      - NGINX_ENVSUBST_OUTPUT_DIR=/etc/nginx
       # Comma-separated list of allowed JSON-RPC methods
       - ALLOWED_METHODS=gettransaction,getrawtransaction,getblock,getblockcount,getblockhash,sendrawtransaction,estimatesmartfee,estimatefee,getblockchaininfo
       # Backend Bitcoin node address (host:port)
