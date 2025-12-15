@@ -12,7 +12,7 @@ http {
 
     server {
         listen 80;
-        server_name localhost;
+        server_name _;
 
         location / {
             # Call njs function to check the request
