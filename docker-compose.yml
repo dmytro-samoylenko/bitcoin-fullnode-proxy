@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  bitcoin-proxy:
+    build: .
+    ports:
+      - "8080:80"
+    environment:
+      # Comma-separated list of allowed JSON-RPC methods
+      - ALLOWED_METHODS=gettransaction,getrawtransaction,getblock,getblockcount,getblockhash,sendrawtransaction,estimatesmartfee,estimatefee,getblockchaininfo
+      # Backend Bitcoin node address (host:port)
+      - BACKEND_HOST=bitcoin-node:8332
+    depends_on:
+      - bitcoin-node
+    restart: unless-stopped
+
+  # Example Bitcoin node (replace with your actual backend)
+  bitcoin-node:
+    image: ruimarinho/bitcoin-core:latest
+    ports:
+      - "8332:8332"
+    volumes:
+      - bitcoin-data:/home/bitcoin/.bitcoin
+    command:
+      - -printtoconsole
+      - -regtest=1
+      - -rpcallowip=0.0.0.0/0
+      - -rpcbind=0.0.0.0
+      - -rpcuser=rpcuser
+      - -rpcpassword=rpcpassword
+
+volumes:
+  bitcoin-data:
