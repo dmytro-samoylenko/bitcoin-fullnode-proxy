@@ -75,14 +75,9 @@ function filterRequest(r) {
             'Content-Type': 'application/json'
         }
     }, function(reply) {
-        // Debug logging
-        r.error(`Backend response status: ${reply.status}`);
-        r.error(`Backend response body: ${reply.responseText || reply.responseBody || 'empty'}`);
-
         if (reply.status >= 200 && reply.status < 300) {
             r.return(reply.status, reply.responseText || reply.responseBody);
         } else {
-            r.error(`Backend error for method ${method}: status=${reply.status}`);
             r.return(reply.status, reply.responseText || reply.responseBody || JSON.stringify({
                 jsonrpc: '1.0',
                 error: {
