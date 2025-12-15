@@ -69,7 +69,12 @@ function filterRequest(r) {
     // Forward request to backend
     r.subrequest('/_backend', {
         method: r.method,
-        body: body
+        body: body,
+        args: r.args,
+        headers: {
+            'Authorization': r.headersIn.Authorization || '',
+            'Content-Type': 'application/json'
+        }
     }, function(reply) {
         if (reply.status >= 200 && reply.status < 300) {
             r.return(reply.status, reply.responseText || reply.responseBody);
