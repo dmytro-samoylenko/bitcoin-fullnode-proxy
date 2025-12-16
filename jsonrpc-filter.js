@@ -1,4 +1,7 @@
 function filterRequest(r) {
+    // Set response Content-Type to application/json
+    r.headersOut['Content-Type'] = 'application/json';
+
     // Get allowed methods from environment variable
     const allowedMethodsEnv = process.env.ALLOWED_METHODS || '';
     const allowedMethods = allowedMethodsEnv.split(',').map(m => m.trim());
