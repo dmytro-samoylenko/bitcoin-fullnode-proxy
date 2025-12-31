@@ -12,6 +12,8 @@ services:
       - ALLOWED_METHODS=gettransaction,getrawtransaction,getblock,getblockcount,getblockhash,sendrawtransaction,estimatesmartfee,estimatefee,getblockchaininfo
       # Backend Bitcoin node address (host:port)
       - BACKEND_HOST=bitcoin-node:8332
+      # Trusted proxy IP for real client IP detection
+      - TRUSTED_PROXY=10.0.0.0
     depends_on:
       - bitcoin-node
     restart: unless-stopped

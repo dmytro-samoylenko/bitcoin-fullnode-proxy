@@ -19,6 +19,7 @@ Set the following environment variables:
 
 - `ALLOWED_METHODS`: Comma-separated list of allowed JSON-RPC methods (e.g., `getblockchaininfo,getblockcount,getbestblockhash`)
 - `BACKEND_HOST`: Backend Bitcoin node address in format `host:port` (e.g., `localhost:8332`)
+- `TRUSTED_PROXY`: IP address or CIDR range of trusted proxy/load balancer for real client IP detection (e.g., `10.0.0.0` or `10.0.0.0/8`)
 
 ### ⚠️ CRITICAL: Required nginx Environment Variables
 
@@ -53,6 +54,7 @@ docker run -p 8080:80 \
   -e NGINX_ENVSUBST_OUTPUT_DIR=/etc/nginx \
   -e ALLOWED_METHODS="getblockchaininfo,getblockcount,getbestblockhash" \
   -e BACKEND_HOST="your-bitcoin-node:8332" \
+  -e TRUSTED_PROXY="10.0.0.0" \
   ghcr.io/dmytro-samoylenko/bitcoin-fullnode-proxy:latest
 ```
 
@@ -71,6 +73,7 @@ docker run -p 8080:80 \
   -e NGINX_ENVSUBST_OUTPUT_DIR=/etc/nginx \
   -e ALLOWED_METHODS="getblockchaininfo,getblockcount,getbestblockhash" \
   -e BACKEND_HOST="your-bitcoin-node:8332" \
+  -e TRUSTED_PROXY="10.0.0.0" \
   bitcoin-proxy
 ```
 
