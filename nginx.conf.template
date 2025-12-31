@@ -8,6 +8,8 @@ env ALLOWED_METHODS;
 env BACKEND_HOST;
 env TRUSTED_PROXY;
 
+error_log stderr warn;
+
 http {
     js_import jsonrpc from /etc/nginx/jsonrpc-filter.js;
 
