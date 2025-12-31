@@ -58,6 +58,7 @@ function filterRequest(r) {
 
     // Check if method is in whitelist
     if (!allowedMethods.includes(method)) {
+        r.warn(`Method not allowed: ${method} (client: ${r.remoteAddress})`);
         r.return(403, JSON.stringify({
             jsonrpc: '1.0',
             error: {
